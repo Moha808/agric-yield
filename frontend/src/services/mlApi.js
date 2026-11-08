@@ -1,4 +1,4 @@
-const ML_API_BASE_URL = import.meta.env.VITE_ML_API_URL || 'http://localhost:8000';
+const ML_API_BASE_URL = import.meta.env.VITE_ML_API_URL || import.meta.env.VITE_API_URL || 'https://agric-yield.onrender.com';
 
 async function request(endpoint, options = {}) {
   try {
