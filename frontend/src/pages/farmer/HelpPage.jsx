@@ -21,7 +21,10 @@ export default function HelpPage() {
 
   const instructionsEnglish = `Welcome to AgriYield AI Farmer Support. This system assists smallholders in Jos South with precision Irish Potato and Tomato management. To diagnose a disease, capture a well-lit photo of an infected leaf. Even without internet, your predictions are stored locally on your device and will sync automatically when back online.`;
 
-  const speechText = i18n.language === 'ha' ? instructionsHausa : instructionsEnglish;
+  const speechText = {
+    en: instructionsEnglish,
+    ha: instructionsHausa
+  };
 
   const faqs = [
     {

@@ -20,10 +20,13 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
 
-  const heroSpeech = "AgriYield AI. Enhancing agricultural yield with machine learning for Irish Potato and Tomato smallholder farmers in Jos South, Plateau State, Nigeria. Access leaf disease detection, crop suitability matching, fertilizer recommendations, and harvest yield forecasting.";
+  const heroSpeech = {
+    en: "AgriYield AI. Precision farming decision support for Irish Potato and Tomato smallholder farmers in Jos South, Plateau State, Nigeria. Access leaf disease detection, crop suitability matching, fertilizer recommendations, and harvest yield forecasting.",
+    ha: "Barka da zuwa AgriYield AI. Kayan aikin noma mai hikima don manoman Dankalin Turawa da Tumatur a Jos South, Jihar Filato. Kuna iya binciken cututtukan ganye, dacewar shuka, lissafin taki, da hasashen yawan girbi."
+  };
 
   return (
     <div className="space-y-16 pb-16">
@@ -65,7 +68,6 @@ export default function LandingPage() {
               <SpeechButton 
                 text={heroSpeech} 
                 className="bg-emerald-600 hover:bg-emerald-500 text-white border-transparent text-xs" 
-                label="Listen to Introduction"
               />
             </div>
 

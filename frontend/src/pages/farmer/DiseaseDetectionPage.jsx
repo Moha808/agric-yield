@@ -114,8 +114,11 @@ export default function DiseaseDetectionPage() {
   };
 
   const speechText = result
-    ? `Diagnosis: ${result.common_name}. Severity: ${result.severity}. Organic remedy: ${result.treatment?.organic}. Chemical remedy: ${result.treatment?.chemical}. Bayanin Hausa: ${result.treatment?.hausa_action}`
-    : '';
+    ? {
+        en: `Diagnosis: ${result.common_name}. Severity: ${result.severity}. Organic remedy: ${result.treatment?.organic}. Chemical control: ${result.treatment?.chemical}.`,
+        ha: `Sakamakon bincike: An gano cutar ${result.common_name}. Matsayin cuta: ${result.severity}. Shawarar magani: ${result.treatment?.hausa_action || result.treatment?.organic}.`
+      }
+    : null;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 space-y-6">

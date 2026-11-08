@@ -205,7 +205,6 @@ export default function Navbar() {
             <SpeechButton 
               readPage={true} 
               className="bg-emerald-800/80 hover:bg-emerald-700 text-white border-emerald-700 text-[11px] px-2.5 py-1.5" 
-              label="Listen"
             />
 
             {/* Sync / Online Status Badge */}

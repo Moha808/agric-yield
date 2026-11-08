@@ -83,7 +83,10 @@ export default function FarmerHome() {
     }
   ];
 
-  const welcomeText = `Barka da zuwa ${profile?.fullName || 'Manomi'}. Wannan ita ce manhajar AgriYield AI ta taimakon manoman Dankalin Turawa da Tumatur a Jos South.`;
+  const welcomeText = {
+    en: `Welcome, ${profile?.fullName || 'Farmer'}. This is your AgriYield AI decision dashboard for Irish Potato and Tomato farming in ${farmerVillage}, Jos South.`,
+    ha: `Barka da zuwa, ${profile?.fullName || 'Manomi'}. Wannan ita ce cibiyar AgriYield AI ta taimakon manoman Dankalin Turawa da Tumatur a ${farmerVillage}, Jos South.`
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 sm:px-6 space-y-6">

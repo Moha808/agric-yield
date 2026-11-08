@@ -1,18 +1,21 @@
 import React from 'react';
-import { Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { Volume2, Square, VolumeX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSpeechReader } from '../../hooks/useSpeechReader';
 
 export default function SpeechButton({ 
   text = null, 
+  hausaText = null,
   className = '', 
   label = null, 
   readPage = false 
 }) {
   const { t, i18n } = useTranslation();
-  const { speak, readCurrentPage, stop, isSpeaking, supported } = useSpeechReader();
+  const { speak, readCurrentPage, stop, isSpeaking, supported, currentLanguage } = useSpeechReader();
 
   if (!supported) return null;
+
+  const isHausa = (currentLanguage || i18n.language) === 'ha';
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -20,15 +23,22 @@ export default function SpeechButton({
     if (isSpeaking) {
       stop();
     } else {
-      if (readPage || !text) {
+      if (readPage || (!text && !hausaText)) {
         readCurrentPage(i18n.language);
       } else {
-        speak(text, i18n.language);
+        // If an explicit hausaText is provided and language is 'ha', use it!
+        const payload = {
+          en: typeof text === 'object' && text !== null ? text.en : text,
+          ha: hausaText || (typeof text === 'object' && text !== null ? text.ha : text)
+        };
+        speak(payload, i18n.language);
       }
     }
   };
 
-  const buttonText = label || (isSpeaking ? t('stop_speech') : t('read_aloud'));
+  const defaultPlayText = isHausa ? 'Saurara' : 'Listen';
+  const defaultStopText = isHausa ? 'Dakata' : 'Stop Audio';
+  const buttonText = label ? (isSpeaking ? (isHausa ? 'Dakata' : 'Stop') : label) : (isSpeaking ? defaultStopText : defaultPlayText);
 
   return (
     <button
@@ -36,16 +46,16 @@ export default function SpeechButton({
       type="button"
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs touch-target cursor-pointer select-none ${
         isSpeaking 
-          ? 'bg-amber-600 text-white animate-pulse ring-2 ring-amber-400' 
+          ? 'bg-red-600 text-white animate-pulse ring-2 ring-red-400' 
           : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200 border border-emerald-300'
       } ${className}`}
-      title={isSpeaking ? t('stop_speech') : (readPage ? 'Read this page aloud' : t('read_aloud'))}
-      aria-label={isSpeaking ? t('stop_speech') : t('read_aloud')}
+      title={isSpeaking ? (isHausa ? 'Dakata da karatu' : 'Stop audio playback') : (isHausa ? 'Saurari bayani' : 'Listen to audio guide')}
+      aria-label={isSpeaking ? 'Stop audio' : 'Listen to audio'}
     >
       {isSpeaking ? (
         <>
-          <VolumeX className="w-4 h-4 shrink-0" />
-          <span>{label ? 'Stop Audio' : t('stop_speech')}</span>
+          <Square className="w-3.5 h-3.5 fill-current shrink-0" />
+          <span>{buttonText}</span>
         </>
       ) : (
         <>

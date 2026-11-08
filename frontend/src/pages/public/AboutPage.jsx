@@ -3,7 +3,10 @@ import { Sprout, MapPin, ShieldCheck, Heart, Cpu, FileCheck } from 'lucide-react
 import SpeechButton from '../../components/common/SpeechButton';
 
 export default function AboutPage() {
-  const aboutText = "AgriYield AI is developed to bridge the digital agricultural divide for smallholder farmers in Jos South, Plateau State, Nigeria, specializing in Solanum tuberosum (Irish potato) and Solanum lycopersicum (tomato).";
+  const aboutText = {
+    en: "AgriYield AI is developed to bridge the digital agricultural divide for smallholder farmers in Jos South, Plateau State, Nigeria, specializing in Solanum tuberosum (Irish potato) and Solanum lycopersicum (tomato).",
+    ha: "An kirkiro AgriYield AI ne domin taimaka wa manoman Jos South, Jihar Filato, musamman a noman Dankalin Turawa da Tumatur ta hanyar fasahar zamani da saukin amfani."
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 space-y-8">

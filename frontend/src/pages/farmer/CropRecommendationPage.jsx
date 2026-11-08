@@ -113,8 +113,11 @@ export default function CropRecommendationPage() {
   };
 
   const speechText = result
-    ? `Top recommended crop is ${result.recommendations?.[0]?.crop} with ${result.recommendations?.[0]?.confidence}% confidence. ${result.plateau_context?.explanation}`
-    : '';
+    ? {
+        en: `Top recommended crop is ${result.recommendations?.[0]?.crop} with ${result.recommendations?.[0]?.confidence}% confidence. ${result.plateau_context?.explanation || ''}`,
+        ha: `Shukar da ta fi dacewa da kasarka ita ce ${result.recommendations?.[0]?.crop === 'potato' ? 'Dankalin Turawa' : (result.recommendations?.[0]?.crop === 'tomato' ? 'Tumatur' : result.recommendations?.[0]?.crop)} da kashi ${result.recommendations?.[0]?.confidence} cikin dari. ${result.plateau_context?.hausa_explanation || ''}`
+      }
+    : null;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 space-y-6">

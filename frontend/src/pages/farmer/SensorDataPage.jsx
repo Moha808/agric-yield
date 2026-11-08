@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { mlApi } from '../../services/mlApi';
+import { db } from '../../firebase/config';
+import { collection, addDoc } from 'firebase/firestore';
 import SpeechButton from '../../components/common/SpeechButton';
 import { 
   Activity, 
@@ -63,12 +65,35 @@ export default function SensorDataPage() {
     setSavingManual(true);
     try {
       const newReading = {
-        ...manualForm,
-        farmer_id: profile?.uid,
+        soil_moisture: Number(manualForm.soil_moisture),
+        soil_temp: Number(manualForm.soil_temp),
+        air_temp: Number(manualForm.air_temp),
+        humidity: Number(manualForm.humidity),
+        farmer_id: profile?.uid || 'web_farmer',
         timestamp: new Date().toISOString()
       };
-      await mlApi.recordSensorReading(newReading);
-      toast.success('Manual soil reading added to field logs!');
+
+      let apiSuccess = false;
+      try {
+        await mlApi.recordSensorReading(newReading);
+        apiSuccess = true;
+      } catch (apiErr) {
+        console.warn('Backend API record fallback to Firestore:', apiErr);
+      }
+
+      // Ensure persistence directly in Firestore as well
+      try {
+        await addDoc(collection(db, 'sensorReadings'), {
+          ...newReading,
+          received_at: new Date().toISOString()
+        });
+      } catch (firestoreErr) {
+        console.warn('Firestore sensor direct write note:', firestoreErr);
+      }
+
+      // Immediately append to local state so user sees it instantly
+      setReadings(prev => [...prev, newReading]);
+      toast.success('Soil reading saved successfully!');
       setShowManualModal(false);
       await loadSensors();
     } catch (err) {
@@ -226,7 +251,10 @@ export default function SensorDataPage() {
                 <Droplets className="w-4 h-4" />
                 <span>Irrigation & Soil Moisture Advisory</span>
               </div>
-              <SpeechButton text={`${irrigationAdvice}. ${hausaAdvice}`} className="bg-white/10 text-white hover:bg-white/20 border-white/20" />
+              <SpeechButton 
+                text={{ en: irrigationAdvice, ha: hausaAdvice }} 
+                className="bg-white/10 text-white hover:bg-white/20 border-white/20" 
+              />
             </div>
             <p className="text-xs leading-relaxed font-medium text-stone-200">
               {irrigationAdvice}

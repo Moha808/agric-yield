@@ -3,8 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { OfflineSyncProvider } from './context/OfflineSyncContext';
+import { SpeechProvider } from './context/SpeechContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
+import AudioFloatingPlayer from './components/common/AudioFloatingPlayer';
 import './i18n';
 
 // Lazy loaded pages for ultra-light initial bundle (<2GB RAM friendly)
@@ -66,45 +68,48 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <OfflineSyncProvider>
-          <div className="min-h-screen flex flex-col bg-emerald-50/40 text-stone-900 font-sans">
-            <Navbar />
-            <main className="flex-grow">
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<LandingPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <SpeechProvider>
+            <div className="min-h-screen flex flex-col bg-emerald-50/40 text-stone-900 font-sans">
+              <Navbar />
+              <main className="flex-grow">
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-                  {/* Farmer Protected Routes */}
-                  <Route path="/home" element={<ProtectedRoute><FarmerHome /></ProtectedRoute>} />
-                  <Route path="/crop-recommendation" element={<ProtectedRoute><CropRecommendationPage /></ProtectedRoute>} />
-                  <Route path="/disease-detection" element={<ProtectedRoute><DiseaseDetectionPage /></ProtectedRoute>} />
-                  <Route path="/fertilizer" element={<ProtectedRoute><FertilizerPage /></ProtectedRoute>} />
-                  <Route path="/yield-prediction" element={<ProtectedRoute><YieldPredictionPage /></ProtectedRoute>} />
-                  <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
-                  <Route path="/sensors" element={<ProtectedRoute><SensorDataPage /></ProtectedRoute>} />
-                  <Route path="/profile" element={<ProtectedRoute><FarmerProfilePage /></ProtectedRoute>} />
-                  <Route path="/help" element={<HelpPage />} />
+                    {/* Farmer Protected Routes */}
+                    <Route path="/home" element={<ProtectedRoute><FarmerHome /></ProtectedRoute>} />
+                    <Route path="/crop-recommendation" element={<ProtectedRoute><CropRecommendationPage /></ProtectedRoute>} />
+                    <Route path="/disease-detection" element={<ProtectedRoute><DiseaseDetectionPage /></ProtectedRoute>} />
+                    <Route path="/fertilizer" element={<ProtectedRoute><FertilizerPage /></ProtectedRoute>} />
+                    <Route path="/yield-prediction" element={<ProtectedRoute><YieldPredictionPage /></ProtectedRoute>} />
+                    <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
+                    <Route path="/sensors" element={<ProtectedRoute><SensorDataPage /></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><FarmerProfilePage /></ProtectedRoute>} />
+                    <Route path="/help" element={<HelpPage />} />
 
-                  {/* Admin Protected Routes */}
-                  <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                  <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
-                  <Route path="/admin/models" element={<AdminRoute><AdminModels /></AdminRoute>} />
-                  <Route path="/admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
-                  <Route path="/admin/feedback" element={<AdminRoute><AdminFeedback /></AdminRoute>} />
+                    {/* Admin Protected Routes */}
+                    <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                    <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+                    <Route path="/admin/models" element={<AdminRoute><AdminModels /></AdminRoute>} />
+                    <Route path="/admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
+                    <Route path="/admin/feedback" element={<AdminRoute><AdminFeedback /></AdminRoute>} />
 
-                  {/* Fallback */}
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-            <Toaster position="bottom-center" toastOptions={{ duration: 4000 }} />
-          </div>
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </Suspense>
+              </main>
+              <Footer />
+              <AudioFloatingPlayer />
+              <Toaster position="bottom-center" toastOptions={{ duration: 4000 }} />
+            </div>
+          </SpeechProvider>
         </OfflineSyncProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -283,7 +283,17 @@ export default function ReportsPage() {
 
             <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
               <SpeechButton 
-                text={selectedReport.result?.common_name || selectedReport.result?.action || 'Report details'} 
+                text={
+                  selectedReport.result?.hausa_treatment 
+                    ? {
+                        en: `${selectedReport.result?.common_name || selectedReport.type}. ${selectedReport.result?.management_recommendations?.[0] || selectedReport.result?.action || ''}`,
+                        ha: `${selectedReport.result?.hausa_name || ''}. ${selectedReport.result?.hausa_treatment || ''}`
+                      }
+                    : {
+                        en: `${selectedReport.result?.common_name || selectedReport.result?.action || 'Report details'}`,
+                        ha: `${selectedReport.result?.hausa_name || selectedReport.result?.action || 'Cikakken bayanin rahoto'}`
+                      }
+                } 
               />
               <button
                 onClick={() => downloadReportPDF(selectedReport, profile)}

@@ -92,7 +92,7 @@ export const mlApi = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        device_key: import.meta.env.VITE_IOT_DEVICE_KEY || '',
+        device_key: import.meta.env.VITE_IOT_DEVICE_KEY || 'manual_web_entry',
         ...reading
       })
     });

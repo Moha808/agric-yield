@@ -108,8 +108,11 @@ export default function YieldPredictionPage() {
   };
 
   const speechText = result
-    ? `Predicted yield is ${result.yield_kg_per_acre} kilograms per acre. Status is ${result.interpretation}. Hausa: ${result.hausa_interpretation}`
-    : '';
+    ? {
+        en: `Predicted yield is ${result.yield_kg_per_acre} kilograms per acre, totaling approximately ${result.total_expected_yield_kg} kilograms. Assessment: ${result.interpretation}.`,
+        ha: `Hasashen yawan girbi: Za a iya girbin kilo ${result.yield_kg_per_acre} a kowace eka, jimillar kilo ${result.total_expected_yield_kg}. Matsayin amfani: ${result.hausa_interpretation || result.interpretation}.`
+      }
+    : null;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 space-y-6">

@@ -62,8 +62,11 @@ export default function FertilizerPage() {
   };
 
   const speechText = result
-    ? `${result.title}. Action needed: ${result.action}. Shawarar Hausa: ${result.hausa_action}`
-    : '';
+    ? {
+        en: `${result.title}. Recommendation: ${result.action}`,
+        ha: `Sakamakon binciken taki: ${result.hausa_action || result.action}`
+      }
+    : null;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 space-y-6">
