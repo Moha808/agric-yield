@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.role == 'admin' || 
+         (exists(/databases/$(database)/documents/farmers/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/farmers/$(request.auth.uid)).data.get('role', 'farmer') == 'admin'));
+    }
+
+    // Farmers profiles: Farmers can read/update their own profile, Admins full access
+    match /farmers/{farmerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == farmerId;
+      allow update: if isOwner(farmerId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Predictions: Farmers can read/create/update their own predictions
+    match /predictions/{predictionId} {
+      allow read: if isAuthenticated() && (resource.data.farmerId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.farmerId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Sensor Readings: IoT device ingestion and farmer telemetry
+    match /sensorReadings/{readingId} {
+      allow read: if isAuthenticated();
+      allow create: if true; // Allows field IoT hardware nodes to transmit readings
+      allow update, delete: if isAdmin();
+    }
+
+    // Machine Learning Models metadata: Public/Authenticated can read, only Admin can write
+    match /models/{modelId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Contact Us Messages: Anyone (public) can submit, only Admin can read/manage
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

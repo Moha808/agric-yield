@@ -1,0 +1,7 @@
+{
+  "mae": 174.12,
+  "rmse": 223.64,
+  "r2_score": 0.9342,
+  "synthetic_notice": "Synthetically generated dataset calibrated to Plateau State NRCRI Vom benchmarks.",
+  "samples_count": 3000
+}

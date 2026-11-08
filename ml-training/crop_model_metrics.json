@@ -1,0 +1,78 @@
+{
+  "accuracy": 0.9925,
+  "f1_score": 0.9925,
+  "feature_importances": [
+    {
+      "feature": "K",
+      "importance": 0.2305
+    },
+    {
+      "feature": "rainfall",
+      "importance": 0.2076
+    },
+    {
+      "feature": "temperature",
+      "importance": 0.1508
+    },
+    {
+      "feature": "P",
+      "importance": 0.127
+    },
+    {
+      "feature": "humidity",
+      "importance": 0.1102
+    },
+    {
+      "feature": "N",
+      "importance": 0.0895
+    },
+    {
+      "feature": "ph",
+      "importance": 0.0844
+    }
+  ],
+  "classes": [
+    "cabbage",
+    "maize",
+    "potato",
+    "rice",
+    "tomato"
+  ],
+  "confusion_matrix": [
+    [
+      79,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      80,
+      0,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      79,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      80,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      79
+    ]
+  ]
+}

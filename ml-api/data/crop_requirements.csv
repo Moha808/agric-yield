@@ -1,0 +1,3 @@
+crop,min_N,max_N,ideal_N,min_P,max_P,ideal_P,min_K,max_K,ideal_K,min_pH,max_pH
+potato,100,160,130,70,110,90,140,200,170,5.0,6.5
+tomato,90,140,115,50,90,70,90,150,120,6.0,7.0
