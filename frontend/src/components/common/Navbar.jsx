@@ -199,26 +199,26 @@ export default function Navbar() {
           </nav>
 
           {/* Right Status Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             
-            {/* Quick Page Audio Reader */}
+            {/* Quick Page Audio Reader (Desktop & Tablet) */}
             <SpeechButton 
               readPage={true} 
-              className="bg-emerald-800/80 hover:bg-emerald-700 text-white border-emerald-700 text-[11px] px-2.5 py-1.5" 
+              className="hidden md:inline-flex bg-emerald-800/80 hover:bg-emerald-700 text-white border-emerald-700 text-[11px] px-2.5 py-1.5 shrink-0" 
             />
 
             {/* Sync / Online Status Badge */}
-            <div className="flex items-center">
+            <div className="flex items-center shrink-0">
               {isOnline ? (
-                <div className="flex items-center gap-1.5 bg-emerald-950/60 text-emerald-200 text-[11px] px-2.5 py-1.5 rounded-xl border border-emerald-700/60 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <div className="flex items-center gap-1 bg-emerald-950/60 text-emerald-200 text-[11px] px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-emerald-700/60 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                   <Wifi className="w-3 h-3 hidden sm:inline text-emerald-400" />
                   <span className="hidden sm:inline">{t('online')}</span>
                   {unsyncedCount > 0 && (
                     <button 
                       onClick={syncNow}
                       disabled={isSyncing}
-                      className="ml-1 bg-amber-400 text-stone-950 text-[10px] font-black px-1.5 py-0.2 rounded-md flex items-center gap-1 hover:bg-amber-300 cursor-pointer"
+                      className="ml-0.5 sm:ml-1 bg-amber-400 text-stone-950 text-[10px] font-black px-1.5 py-0.2 rounded-md flex items-center gap-1 hover:bg-amber-300 cursor-pointer"
                       title="Sync offline records"
                     >
                       <RefreshCw className={`w-2.5 h-2.5 ${isSyncing ? 'animate-spin' : ''}`} />
@@ -227,11 +227,11 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-1 bg-amber-500/20 text-amber-200 text-[11px] px-2.5 py-1.5 rounded-xl border border-amber-400/40 font-medium">
+                <div className="flex items-center gap-1 bg-amber-500/20 text-amber-200 text-[11px] px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-amber-400/40 font-medium">
                   <WifiOff className="w-3 h-3 text-amber-300" />
-                  <span>{t('offline')}</span>
+                  <span className="hidden sm:inline">{t('offline')}</span>
                   {unsyncedCount > 0 && (
-                    <span className="bg-amber-400 text-stone-950 text-[10px] px-1.5 py-0.2 rounded-md font-black ml-1">
+                    <span className="bg-amber-400 text-stone-950 text-[10px] px-1.5 py-0.2 rounded-md font-black ml-0.5">
                       {unsyncedCount}
                     </span>
                   )}
@@ -242,17 +242,18 @@ export default function Navbar() {
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-emerald-700 bg-emerald-800 hover:bg-emerald-700 text-white transition-colors cursor-pointer"
+              className="flex items-center gap-1 text-xs font-bold px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-emerald-700 bg-emerald-800 hover:bg-emerald-700 text-white transition-colors cursor-pointer shrink-0"
               aria-label="Switch language"
               title="Toggle Hausa / English"
             >
-              <Globe className="w-3.5 h-3.5 text-emerald-300" />
-              <span>{i18n.language === 'ha' ? 'Hausa' : 'English'}</span>
+              <Globe className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+              <span className="hidden sm:inline">{i18n.language === 'ha' ? 'Hausa' : 'English'}</span>
+              <span className="sm:hidden text-[11px]">{i18n.language === 'ha' ? 'HA' : 'EN'}</span>
             </button>
 
             {/* User Profile / Auth */}
             {user ? (
-              <div className="flex items-center gap-1.5 pl-1">
+              <div className="flex items-center gap-1 sm:gap-1.5 pl-0.5 sm:pl-1 shrink-0">
                 <Link
                   to="/profile"
                   className="w-8 h-8 rounded-xl bg-emerald-800 border border-emerald-700 flex items-center justify-center text-emerald-100 font-bold hover:bg-emerald-700 hover:text-white transition-colors"
@@ -262,7 +263,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="p-1.5 text-emerald-200 hover:text-red-300 rounded-xl hover:bg-emerald-800 transition-colors cursor-pointer"
+                  className="hidden sm:block p-1.5 text-emerald-200 hover:text-red-300 rounded-xl hover:bg-emerald-800 transition-colors cursor-pointer"
                   title="Sign Out to Landing Page"
                   aria-label="Sign out"
                 >
@@ -270,7 +271,7 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 pl-1">
+              <div className="hidden sm:flex items-center gap-2 pl-1 shrink-0">
                 <Link
                   to="/login"
                   className="text-emerald-100 hover:text-white text-xs font-bold px-2.5 py-1.5 rounded-xl hover:bg-emerald-800 transition-colors"
@@ -289,7 +290,7 @@ export default function Navbar() {
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-emerald-100 hover:text-white rounded-xl hover:bg-emerald-800 focus:outline-none cursor-pointer"
+              className="lg:hidden p-2 text-emerald-100 hover:text-white rounded-xl hover:bg-emerald-800 focus:outline-none cursor-pointer shrink-0"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -299,7 +300,18 @@ export default function Navbar() {
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-emerald-800/80 space-y-1.5 bg-emerald-950/95 backdrop-blur-md rounded-b-2xl px-2 shadow-xl animate-in slide-in-from-top-2">
+          <div className="lg:hidden py-4 border-t border-emerald-800/80 space-y-2 bg-emerald-950/98 backdrop-blur-md rounded-b-2xl px-3 shadow-xl animate-in slide-in-from-top-2">
+            
+            {/* Quick Voice Reader in Drawer */}
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-900/60 border border-emerald-800/80 mb-2">
+              <span className="text-xs font-bold text-emerald-200">
+                {i18n.language === 'ha' ? "Karanta Wannan Shafin" : "Listen to page"}
+              </span>
+              <SpeechButton 
+                readPage={true} 
+                className="bg-emerald-700 hover:bg-emerald-600 text-white border-transparent text-xs py-1 px-3" 
+              />
+            </div>
             {user ? (
               <>
                 <Link 

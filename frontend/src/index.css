@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
     @apply bg-emerald-50/40 text-stone-900 antialiased selection:bg-emerald-200 selection:text-emerald-900 min-h-screen font-sans;
   }

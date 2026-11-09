@@ -10,8 +10,8 @@ export default function AudioFloatingPlayer() {
   const isHausa = currentLanguage === 'ha';
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-4 duration-200">
-      <div className="bg-stone-900/95 text-white px-4 py-3 rounded-2xl shadow-2xl border-2 border-emerald-500 backdrop-blur-md flex items-center gap-3.5 max-w-sm sm:max-w-md w-full">
+    <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-sm sm:max-w-md animate-in slide-in-from-bottom-4 duration-200">
+      <div className="bg-stone-900/95 text-white px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-2xl shadow-2xl border-2 border-emerald-500 backdrop-blur-md flex items-center gap-3 w-full">
         
         {/* Pulsing Voice Indicator */}
         <div className="flex items-center gap-2">
