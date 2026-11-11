@@ -38,7 +38,7 @@ function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   return children;
 }
@@ -47,7 +47,7 @@ function AdminRoute({ children }) {
   const { user, profile, loading } = useAuth();
   if (loading) return <PageLoader />;
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login?redirect=admin" replace />;
   }
   if (profile?.role !== 'admin') {
     return <Navigate to="/home" replace />;

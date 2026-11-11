@@ -104,6 +104,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
+      let resolvedProfile = null;
       try {
         const userDoc = await getDoc(doc(db, 'farmers', cred.user.uid));
         if (userDoc.exists()) {
@@ -112,26 +113,30 @@ export function AuthProvider({ children }) {
             await signOut(auth);
             throw new Error('This account has been suspended or deactivated. Please contact an administrator.');
           }
+          resolvedProfile = data;
           setProfile(data);
         } else {
-          setProfile({
+          resolvedProfile = {
             uid: cred.user.uid,
             email: cred.user.email,
             role: 'farmer',
             fullName: cred.user.displayName || 'Farmer'
-          });
+          };
+          setProfile(resolvedProfile);
         }
       } catch (docErr) {
         if (docErr.message?.includes('suspended') || docErr.message?.includes('deactivated')) throw docErr;
         console.warn('Could not read user profile from Firestore:', docErr);
-        setProfile({
+        resolvedProfile = {
           uid: cred.user.uid,
           email: cred.user.email,
           role: 'farmer',
           fullName: cred.user.displayName || 'Farmer'
-        });
+        };
+        setProfile(resolvedProfile);
       }
       toast.success('Welcome back!');
+      return resolvedProfile;
     } catch (error) {
       toast.error(error.message || 'Login failed.');
       throw error;

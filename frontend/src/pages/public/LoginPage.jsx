@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { Sprout, LogIn, Eye, EyeOff } from 'lucide-react';
+import { Sprout, LogIn, Eye, EyeOff, ShieldAlert } from 'lucide-react';
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const redirectTarget = searchParams.get('redirect'); // e.g. 'admin'
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +21,13 @@ export default function LoginPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await login(email, password);
-      navigate('/home');
+      const userProfile = await login(email, password);
+      // If redirecting to admin, navigate there; otherwise go to farmer home
+      if (redirectTarget === 'admin' && userProfile?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/home');
+      }
     } catch {
       // toast shown in context
     } finally {
@@ -30,16 +38,28 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto px-4 py-8 sm:py-12 space-y-6">
       
+      {/* Admin redirect notice */}
+      {redirectTarget === 'admin' && (
+        <div className="bg-amber-50 border border-amber-300 rounded-2xl p-4 flex items-center gap-3 text-amber-900">
+          <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0" />
+          <div className="text-xs">
+            <span className="font-bold">Admin Portal Access.</span> Sign in with your administrator account to access the Admin Dashboard.
+          </div>
+        </div>
+      )}
+
       {/* Brand Header */}
       <div className="text-center space-y-2">
-        <div className="w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md">
-          <Sprout className="w-8 h-8" />
+        <div className={`w-14 h-14 rounded-2xl ${redirectTarget === 'admin' ? 'bg-amber-500' : 'bg-emerald-600'} text-white flex items-center justify-center mx-auto shadow-md`}>
+          {redirectTarget === 'admin' ? <ShieldAlert className="w-8 h-8" /> : <Sprout className="w-8 h-8" />}
         </div>
         <h1 className="text-2xl font-black text-stone-900 tracking-tight">
-          Sign In to AgriYield AI
+          {redirectTarget === 'admin' ? 'Admin Sign In' : 'Sign In to AgriYield AI'}
         </h1>
         <p className="text-xs text-stone-500">
-          Smallholder Potato & Tomato Decision Support for Jos South
+          {redirectTarget === 'admin' 
+            ? 'Enter your administrator credentials below' 
+            : 'Smallholder Potato & Tomato Decision Support for Jos South'}
         </p>
       </div>
 
